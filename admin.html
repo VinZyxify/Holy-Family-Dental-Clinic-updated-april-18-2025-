@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Holy Family Dental Clinic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: url('HolyFAmDentalClinic Bacground pic.png') no-repeat;
+    background-size: cover;
+    background-position: center -150px;
+    background-attachment: fixed;
+    margin: 0;
+    transition: background-image 0.3s ease-in-out;
+    position: relative;
+    min-height: 50vh;
+    overflow-x: hidden;
+}
+
+
+       /* Base Styles */
+       :root {
+            --bg-color: #f5f7fa;
+            --sidebar-bg: #2c3e50;
+            --sidebar-text: rgba(255, 255, 255, 0.8);
+            --sidebar-active: #00bfff;
+            --card-bg: white;
+            --text-color: #2c3e50;
+            --text-muted: #777;
+            --border-color: #eee;
+            --hover-bg: #f9f9f9;
+            --today-bg: #e6f7ff;
+            --selected-bg: #00bfff;
+            --selected-text: white;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --sidebar-bg: #121212;
+            --sidebar-text: rgba(255, 255, 255, 0.8);
+            --sidebar-active: #00bfff;
+            --card-bg: #2d2d2d;
+            --text-color: #e0e0e0;
+            --text-muted: #aaa;
+            --border-color: #444;
+            --hover-bg: #333;
+            --today-bg: #003366;
+            --selected-bg: #006699;
+            --selected-text: white;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Existing Admin Styles */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header h2 {
+            color: var(--sidebar-active);
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(0, 191, 255, 0.2);
+            color: white;
+            border-left: 3px solid var(--sidebar-active);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--text-color);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* Theme Toggle Switch */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            gap: 10px;
+        }
+
+        .theme-toggle-label {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #00bfff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Dashboard Stats */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .clock-icon { background-color: #2c3e50; }
+        .scheduled-icon { background-color: #00bfff; }
+        .completed-icon { background-color: #4CAF50; }
+        .canceled-icon { background-color: #F44336; }
+        .walkin-icon { background-color: #FF9800; }
+        .pending-icon { background-color: #FFC107; }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .stat-progress {
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: currentColor;
+        }
+
+        /* New Layout Styles */
+        .content-container {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Calendar Styles */
+        .calendar-container {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: 100%;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h2 {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .calendar-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s ease;
+        }
+
+        .calendar-header button:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-weekdays {
+            display: contents;
+            font-weight: bold;
+            color: var(--text-muted);
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .calendar-weekdays div {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .calendar-days {
+            display: contents;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            min-height: 60px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            background-color: var(--card-bg);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .calendar-day.empty {
+            background-color: var(--bg-color);
+            cursor: default;
+        }
+
+        .calendar-day.today {
+            background-color: var(--today-bg);
+            border-color: var(--sidebar-active);
+        }
+
+        .calendar-day.selected {
+            background-color: var(--selected-bg);
+            color: var(--selected-text);
+        }
+
+        .calendar-day.has-events::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--sidebar-active);
+        }
+
+        .calendar-day-number {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        /* Appointments List Styles */
+        .appointments-container {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: 100%;
+            overflow-y: auto;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .appointments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .appointments-title {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .add-patient-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-patient-btn:hover {
+            background-color: #388e3c;
+        }
+
+        .appointment-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #00bfff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .appointment-card.walkin {
+            border-left-color: #FF9800;
+        }
+
+        .appointment-card.completed {
+            border-left-color: #4CAF50;
+            opacity: 0.8;
+        }
+
+        .appointment-card.canceled {
+            border-left-color: #F44336;
+            opacity: 0.6;
+        }
+
+        .patient-info h3 {
+            margin: 0 0 5px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .patient-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .status-new {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-returnee {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .status-walkin {
+            background-color: #fff3e0;
+            color: #EF6C00;
+        }
+
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #2E7D32;
+        }
+
+        .status-canceled {
+            background-color: #ffebee;
+            color: #C62828;
+        }
+
+        .appointment-time {
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .appointment-actions button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+        }
+
+        .view-btn {
+            background-color: #00bfff;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background-color: #009acd;
+        }
+
+        .complete-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .complete-btn:hover {
+            background-color: #388e3c;
+        }
+
+        .cancel-btn {
+            background-color: #F44336;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>HOLY FAMILY DENTAL CLINIC</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="admin.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="appointments.html"><i class="fas fa-calendar-alt"></i> My Appointments</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Records</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Today's Appointments</h1>
+                <div style="display: flex; align-items: center;">
+                    <div class="user-info">
+                        <img src="doctor.png" alt="Doctor">
+                        <span>Dr. Winnerlyn Tutor-Resurreccion</span>
+                    </div>
+                    <div class="theme-toggle">
+                        <span class="theme-toggle-label">Dark Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="themeToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon clock-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="current-time">8:43 AM</span>
+                        <span class="stat-label" id="current-date">Friday, October 23, 2014</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon scheduled-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="total-scheduled">15</span>
+                        <span class="stat-label">Scheduled Today</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon completed-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="total-completed">8</span>
+                        <span class="stat-label">Completed</span>
+                        <div class="stat-progress">
+                            <div class="progress-bar" style="width: 53%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon canceled-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="total-canceled">2</span>
+                        <span class="stat-label">Canceled</span>
+                        <div class="stat-progress">
+                            <div class="progress-bar" style="width: 13%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon walkin-icon">
+                        <i class="fas fa-walking"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="total-walkins">5</span>
+                        <span class="stat-label">Walk-ins Today</span>
+                        <div class="stat-progress">
+                            <div class="progress-bar" style="width: 33%"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon pending-icon">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="total-pending">0</span>
+                        <span class="stat-label">Pending</span>
+                        <div class="stat-progress">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="content-container">
+                <!-- Appointments List (Left Panel) -->
+                <div class="left-panel">
+                    <div class="appointments-container">
+                        <div class="appointments-header">
+                            <h3 class="appointments-title" id="appointments-title">Appointments for March 25, 2025</h3>
+                            <button class="add-patient-btn" id="addPatientBtn">
+                                <i class="fas fa-plus"></i> Add Patient
+                            </button>
+                        </div>
+                        <div id="appointments-list">
+                            <!-- Appointments will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar View (Right Panel) -->
+                <div class="right-panel">
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                            <h2 id="currentMonthYear">March 2025</h2>
+                            <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-weekdays">
+                                <div>Sun</div>
+                                <div>Mon</div>
+                                <div>Tue</div>
+                                <div>Wed</div>
+                                <div>Thu</div>
+                                <div>Fri</div>
+                                <div>Sat</div>
+                            </div>
+                            <div class="calendar-days" id="calendarDays">
+                                <!-- Days will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <script>
+        // Update clock in real-time
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const dateStr = now.toLocaleDateString([], { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            document.getElementById('current-time').textContent = timeStr;
+            document.getElementById('current-date').textContent = dateStr;
+        }
+
+        // Sample data - replace with actual data from your backend
+        function updateStats() {
+            // These would normally come from your API
+            document.getElementById('total-scheduled').textContent = '15';
+            document.getElementById('total-completed').textContent = '8';
+            document.getElementById('total-canceled').textContent = '2';
+            document.getElementById('total-walkins').textContent = '5';
+        }
+
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('themeToggle');
+            const themeLabel = document.querySelector('.theme-toggle-label');
+            
+            if (themeToggle.checked) {
+                html.setAttribute('data-theme', 'dark');
+                themeLabel.textContent = 'Light Mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.removeAttribute('data-theme');
+                themeLabel.textContent = 'Dark Mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Initialize theme from localStorage
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'dark') {
+                themeToggle.checked = true;
+                toggleTheme();
+            }
+        }
+
+        // Initialize
+        updateClock();
+        updateStats();
+        initTheme();
+        setInterval(updateClock, 60000); // Update clock every minute
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calendar functionality
+            const calendarDays = document.getElementById('calendarDays');
+            const currentMonthYear = document.getElementById('currentMonthYear');
+            const prevMonthBtn = document.getElementById('prevMonth');
+            const nextMonthBtn = document.getElementById('nextMonth');
+            const appointmentsList = document.getElementById('appointments-list');
+            const appointmentsTitle = document.getElementById('appointments-title');
+            const addPatientBtn = document.getElementById('addPatientBtn');
+            const themeToggle = document.getElementById('themeToggle');
+
+            let currentDate = new Date(2025, 2, 1); // March 2025 (months are 0-indexed)
+            let selectedDate = new Date(2025, 2, 25); // Default selected date
+
+            // Sample appointments data
+            const appointmentsData = {
+                '2025-03-25': [
+                    { 
+                        id: 1,
+                        name: 'SAMILLANO, KRISTINA CASANDRA S.', 
+                        status: 'returnee', 
+                        time: '1:00 PM',
+                        date: 'MARCH 25, 2025',
+                        type: 'scheduled',
+                        state: 'pending'
+                    },
+                    { 
+                        id: 2,
+                        name: 'ABACCO, SOPHIA GRACE', 
+                        status: 'new', 
+                        time: '2:00 PM',
+                        date: 'MARCH 25, 2025',
+                        type: 'scheduled',
+                        state: 'pending'
+                    },
+                    { 
+                        id: 3,
+                        name: 'CABISON, SAMMUEL D.V', 
+                        status: 'returnee', 
+                        time: '3:30 PM',
+                        date: 'MARCH 25, 2025',
+                        type: 'scheduled',
+                        state: 'pending'
+                    },
+                    { 
+                        id: 4,
+                        name: 'WALK-IN PATIENT', 
+                        status: 'walkin', 
+                        time: '10:30 AM',
+                        date: 'MARCH 25, 2025',
+                        type: 'walkin',
+                        state: 'pending'
+                    }
+                ],
+                '2025-03-30': [
+                    { 
+                        id: 5,
+                        name: 'SMITH, JOHN', 
+                        status: 'returnee', 
+                        time: '10:00 AM',
+                        date: 'MARCH 30, 2025',
+                        type: 'scheduled',
+                        state: 'pending'
+                    },
+                    { 
+                        id: 6,
+                        name: 'WALK-IN PATIENT', 
+                        status: 'walkin', 
+                        time: '11:45 AM',
+                        date: 'MARCH 30, 2025',
+                        type: 'walkin',
+                        state: 'pending'
+                    }
+                ],
+                '2025-04-01': [
+                    { 
+                        id: 7,
+                        name: 'DOE, JANE', 
+                        status: 'new', 
+                        time: '9:00 AM',
+                        date: 'APRIL 1, 2025',
+                        type: 'scheduled',
+                        state: 'pending'
+                    },
+                    { 
+                        id: 8,
+                        name: 'WILLIAMS, MIKE', 
+                        status: 'returnee', 
+                        time: '11:30 AM',
+                        date: 'APRIL 1, 2025',
+                        type: 'scheduled',
+                        state: 'pending'
+                    }
+                ]
+            };
+
+            // Initialize calendar and appointments
+            renderCalendar();
+            renderAppointments(selectedDate);
+
+            // Navigation buttons
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+            // Add patient button
+            addPatientBtn.addEventListener('click', () => {
+                // This would normally open a modal or form to add a new patient
+                alert('Add new patient functionality would go here');
+                // For demo purposes, we'll add a walk-in patient
+                const dateStr = formatDate(selectedDate);
+                if (!appointmentsData[dateStr]) {
+                    appointmentsData[dateStr] = [];
+                }
+                
+                const newWalkIn = {
+                    id: Date.now(),
+                    name: 'NEW WALK-IN PATIENT',
+                    status: 'walkin',
+                    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    date: selectedDate.toLocaleString('default', { 
+                        month: 'long', 
+                        day: 'numeric', 
+                        year: 'numeric' 
+                    }).toUpperCase(),
+                    type: 'walkin',
+                    state: 'pending'
+                };
+                
+                appointmentsData[dateStr].push(newWalkIn);
+                renderAppointments(selectedDate);
+                updateStats(); // Update the walk-ins count
+            });
+
+            // Theme toggle
+            themeToggle.addEventListener('change', toggleTheme);
+
+            // Handle appointment actions
+            function handleAppointmentAction(appointmentId, action) {
+                const dateStr = formatDate(selectedDate);
+                const appointment = appointmentsData[dateStr].find(a => a.id === appointmentId);
+                
+                if (appointment) {
+                    if (action === 'complete') {
+                        appointment.state = 'completed';
+                        appointment.status = 'completed';
+                    } else if (action === 'cancel') {
+                        appointment.state = 'canceled';
+                        appointment.status = 'canceled';
+                    }
+                    
+                    renderAppointments(selectedDate);
+                    updateStats();
+                }
+            }
+            
+            function renderCalendar() {
+                // Update month/year display
+                currentMonthYear.textContent = currentDate.toLocaleString('default', { 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                
+                // Clear previous days
+                calendarDays.innerHTML = '';
+                
+                // Get first day of month and total days
+                const firstDay = new Date(
+                    currentDate.getFullYear(), 
+                    currentDate.getMonth(), 
+                    1
+                );
+                const lastDay = new Date(
+                    currentDate.getFullYear(), 
+                    currentDate.getMonth() + 1, 
+                    0
+                );
+                const totalDays = lastDay.getDate();
+                
+                // Get day of week for first day (0 = Sunday, 6 = Saturday)
+                const firstDayOfWeek = firstDay.getDay();
+                
+                // Add empty cells for days before first day of month
+                for (let i = 0; i < firstDayOfWeek; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day empty';
+                    calendarDays.appendChild(emptyDay);
+                }
+                
+                // Add days of month
+                const today = new Date();
+                for (let day = 1; day <= totalDays; day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Check if this day is today
+                    if (currentDate.getFullYear() === today.getFullYear() && 
+                        currentDate.getMonth() === today.getMonth() && 
+                        day === today.getDate()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    // Check if this day is selected
+                    const dateToCheck = new Date(
+                        currentDate.getFullYear(), 
+                        currentDate.getMonth(), 
+                        day
+                    );
+                    if (dateToCheck.toDateString() === selectedDate.toDateString()) {
+                        dayElement.classList.add('selected');
+                    }
+                    
+                    // Check if this day has appointments
+                    const dateStr = formatDate(dateToCheck);
+                    if (appointmentsData[dateStr]) {
+                        dayElement.classList.add('has-events');
+                    }
+                    
+                    dayElement.innerHTML = `<div class="calendar-day-number">${day}</div>`;
+                    
+                    // Add click event
+                    dayElement.addEventListener('click', () => {
+                        selectedDate = new Date(
+                            currentDate.getFullYear(), 
+                            currentDate.getMonth(), 
+                            day
+                        );
+                        renderCalendar();
+                        renderAppointments(selectedDate);
+                    });
+                    
+                    calendarDays.appendChild(dayElement);
+                }
+            }
+            
+            function renderAppointments(date) {
+                const dateStr = formatDate(date);
+                const formattedDate = date.toLocaleString('default', { 
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                
+                appointmentsTitle.textContent = `Appointments for ${formattedDate}`;
+                appointmentsList.innerHTML = '';
+                
+                if (appointmentsData[dateStr]) {
+                    // Sort appointments by time
+                    const sortedAppointments = [...appointmentsData[dateStr]].sort((a, b) => {
+                        return a.time.localeCompare(b.time);
+                    });
+
+                    sortedAppointments.forEach(appointment => {
+                        const appointmentElement = document.createElement('div');
+                        let statusClass = appointment.status;
+                        let statusText = appointment.status.toUpperCase();
+                        
+                        if (appointment.state === 'completed') {
+                            statusClass = 'completed';
+                            statusText = 'COMPLETED';
+                        } else if (appointment.state === 'canceled') {
+                            statusClass = 'canceled';
+                            statusText = 'CANCELED';
+                        }
+                        
+                        appointmentElement.className = `appointment-card ${appointment.type === 'walkin' ? 'walkin' : ''} ${appointment.state}`;
+                        appointmentElement.innerHTML = `
+                            <div class="patient-info">
+                                <h3>${appointment.name}</h3>
+                                <span class="patient-status status-${statusClass}">
+                                    ${statusText}
+                                </span>
+                                <div class="appointment-time">
+                                    ${appointment.type === 'walkin' ? 'WALK-IN TIME:' : 'APPOINTMENT DATE:'} 
+                                    ${appointment.date} ${appointment.time}
+                                </div>
+                            </div>
+                            <div class="appointment-actions">
+                                <button class="view-btn" data-id="${appointment.id}">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                ${appointment.state === 'pending' ? `
+                                <button class="complete-btn" data-id="${appointment.id}">
+                                    <i class="fas fa-check"></i> Complete
+                                </button>
+                                <button class="cancel-btn" data-id="${appointment.id}">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                                ` : ''}
+                            </div>
+                        `;
+                        appointmentsList.appendChild(appointmentElement);
+                    });
+
+                    // Add event listeners to action buttons
+                    document.querySelectorAll('.view-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const appointmentId = parseInt(e.currentTarget.getAttribute('data-id'));
+                            alert(`Viewing details for appointment ${appointmentId}`);
+                        });
+                    });
+
+                    document.querySelectorAll('.complete-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const appointmentId = parseInt(e.currentTarget.getAttribute('data-id'));
+                            handleAppointmentAction(appointmentId, 'complete');
+                        });
+                    });
+
+                    document.querySelectorAll('.cancel-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const appointmentId = parseInt(e.currentTarget.getAttribute('data-id'));
+                            handleAppointmentAction(appointmentId, 'cancel');
+                        });
+                    });
+                } else {
+                    appointmentsList.innerHTML = '<p>No appointments scheduled for this date</p>';
+                }
+            }
+            
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            // Highlight the current page in sidebar
+            const currentPage = window.location.pathname.split('/').pop();
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            
+            menuItems.forEach(item => {
+                if (item.getAttribute('href') === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update the logout click event in both files
+            document.querySelector('.fa-sign-out-alt').closest('a').addEventListener('click', function(e) {
+                e.preventDefault();
+                adminLogout();
+            });
+
+            // Make sure this function is defined in both files
+            function adminLogout() {
+                sessionStorage.setItem('wasLoggedOut', 'true');
+                localStorage.removeItem('userTypeChoice');
+                window.location.href = 'usertype.html';
+            }
+        });
+    </script>
+</body>
+</html>
